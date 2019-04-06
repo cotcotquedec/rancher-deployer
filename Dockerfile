@@ -62,4 +62,4 @@ COPY . .
 RUN rm -Rf vendor composer.lock \
  && composer install --no-dev --no-suggest -o -n --no-progress --profile --prefer-dist
 
-ENTRYPOINT ["php", "deploy.php"]
+ENTRYPOINT ["php", "/app/deploy.php"]
