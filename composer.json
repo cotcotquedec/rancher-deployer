@@ -1,0 +1,17 @@
+{
+    "name": "cotcotquedec/rancher-deployer",
+    "description": "Docker image script to deploy an image into a rancher cluster.",
+    "type": "project",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/var-dumper": "^4.2",
+        "illuminate/support": "^5.8"
+    },
+    "license": "The Unlicense",
+    "authors": [
+        {
+            "name": "Julien H.",
+            "email": "julien.houvion@gmail.com"
+        }
+    ]
+}
