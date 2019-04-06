@@ -54,7 +54,8 @@ RUN curl --silent --fail --location --retry 3 --output /tmp/installer.php --url 
  && rm -f /tmp/installer.php
 
 # COPY SCRIPT
-WORKDIR /opt
+RUN mkdir /app
+WORKDIR /app
 COPY . .
 
 # COMPOSER
