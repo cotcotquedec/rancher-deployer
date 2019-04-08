@@ -22,6 +22,7 @@ namespace {
     $label_condition = getenv('CONDITION_LABEL');
     $label_condition_value = getenv('CONDITION_VALUE');
     $label_version = getenv('VERSION_LABEL');
+    $label_version_value = getenv('VERSION_VALUE');
 
     // GET RANCHER MODEL
     $rancher = new RancherDeployer($rancher, $cluster, $project, $access_key, $secret);
@@ -39,7 +40,7 @@ namespace {
     echo 'Services found : ' . $services->count() . PHP_EOL;
 
     // UPDATE
-    $services->each(function ($service) use (&$rancher, &$version, &$image, &$tag, &$label_version) {
+    $services->each(function ($service) use (&$rancher, &$version, &$image, &$tag, &$label_version, &$label_version_value) {
 
         // IMAGES
         $containers = data_get($service, 'containers');
@@ -52,12 +53,12 @@ namespace {
 
             // IMAGE GERER
             $matches = [];
-
             $pattern = sprintf('#^(?<image>%s):.+#', $image);
 
+            // SI on ne match pas, on ne gere pas l'image
             if (!preg_match($pattern, $current, $matches)) {
-                echo 'Images différentes : ' . $image . ' != ' . $current . PHP_EOL;
-                continue;
+                echo 'Images différentes [' . $pattern . '] : ' . $image . ' != ' . $current . PHP_EOL;
+                return;
             }
 
             // new image name
@@ -66,7 +67,7 @@ namespace {
 
         // SET NEW VERSION
         data_set($service, 'containers', $containers);
-        empty($label_version) || data_set($service, 'labels.' . $label_version, $tag);
+        empty($label_version) || empty($label_version_value) || data_set($service, 'labels.' . $label_version, $label_version_value);
 
         // UPDATE
         $rancher->updateService($service);
